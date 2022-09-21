@@ -1,6 +1,7 @@
 const { userModel } = require('../models/user');
 const { handleError } = require('./errors');
 const bcyrpt = require('bcryptjs');
+const jwt = require('jsonwebtoken')
 
 const getAllUsers = (req, res) => {
   userModel
@@ -22,11 +23,34 @@ const createUser = (req, res) => {
   bcyrpt.hash(password, 10)
   .then(hash => {
     userModel
-    .create({ name, about, avatar, email, hash })
+    .create({ name, about, avatar, email, password: hash })
   })
     .then((user) => res.send({ data: user }))
     .catch((err) => handleError(err, res));
 };
+
+const login = (req, res) => {
+  const { email, password } = req.body; 
+  userModel.findOne({email})
+  User.findOne({ email })
+  .then((user) => {
+    if (!user) {
+      return Promise.reject(
+        new Error('Incorrect password or email'));
+    }
+    return bcrypt.compare(password, user.password)
+      .then((authenticated) => {
+          if (!authenticated) {
+             return Promise.reject(new Error('bad cred'));
+          }
+          const token = jwt.sign({_id: user._id}, 'encoding-string', {
+            expiresIn: '7d'
+          })
+          res.send({ name: user.name, email: user.email, token: jwt });
+       })
+   })
+   .catch(err => handleError(err, res))
+  }
 
 const updateProfile = (req, res) => {
   const { name, about } = req.body;
@@ -58,6 +82,7 @@ module.exports = {
   getAllUsers,
   getUserById,
   createUser,
+  login, 
   updateProfile,
   updateAvatar,
-};
+}
