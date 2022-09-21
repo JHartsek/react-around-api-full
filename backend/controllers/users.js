@@ -1,5 +1,6 @@
 const { userModel } = require('../models/user');
 const { handleError } = require('./errors');
+const bcyrpt = require('bcryptjs');
 
 const getAllUsers = (req, res) => {
   userModel
@@ -17,9 +18,12 @@ const getUserById = (req, res) => {
 };
 
 const createUser = (req, res) => {
-  const { name, about, avatar } = req.body;
-  userModel
-    .create({ name, about, avatar })
+  const { name, about, avatar, email, password} = req.body;
+  bcyrpt.hash(password, 10)
+  .then(hash => {
+    userModel
+    .create({ name, about, avatar, email, hash })
+  })
     .then((user) => res.send({ data: user }))
     .catch((err) => handleError(err, res));
 };

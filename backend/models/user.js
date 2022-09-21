@@ -7,12 +7,14 @@ const userSchema = new mongoose.Schema({
     required: true,
     minlength: 2,
     maxlength: 30,
+    defualt: 'Jacques Cousteau', 
   },
   about: {
     type: String,
     required: true,
     minlength: 2,
     maxlength: 30,
+    default: 'Explorer',
   },
   avatar: {
     type: String,
@@ -23,6 +25,7 @@ const userSchema = new mongoose.Schema({
       ),
       message: 'invalid URL',
     },
+    defualt: 'https://pictures.s3.yandex.net/resources/avatar_1604080799.jpg',
   },
   email: {
     type: String, 
