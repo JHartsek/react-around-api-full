@@ -11,10 +11,6 @@ userRouter.get('/:userId', (req, res) => {
   getUserById(req, res);
 });
 
-userRouter.post('/', (req, res) => {
-  createUser(req, res);
-});
-
 userRouter.patch('/me', (req, res) => {
   updateProfile(req, res);
 });

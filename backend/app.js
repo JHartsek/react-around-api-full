@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const { limiter } = require('./utils/limiter');
 const userRouter = require('./routes/users');
 const cardRouter = require('./routes/cards');
+const { login, createUser } = require('./controllers/users');
 
 const app = express();
 app.use(helmet());
@@ -20,6 +21,9 @@ app.use((req, res, next) => {
   };
   next();
 });
+
+app.post('/signin', login)
+app.post('/signup', createUser)
 
 app.use('/users', userRouter);
 app.use('/cards', cardRouter);
