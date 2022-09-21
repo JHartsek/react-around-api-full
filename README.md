@@ -1,6 +1,30 @@
 # react-around-api-full
-The API of "Around the U.S." with authorization and registration handled by the back-end server.
+### Overview
+* Description
+* Technologies / Techniques Used
+* Running the Project 
+  
+**Description**    
+  
+Around the US is an interactive platform where registered users can add and delete posts of their own, as well as interact with posts from other users. Additionally, they can update their profile details and image. The purpose of this project was to implement the registration, authentication and authorization functionality. 
+    
+**Technologies / Techniques Used** 
 
-This repository contains the full API of "Around the U.S." project that features user authorization and user registration and handles cards and users. Please add to this readme:
-* a link to repository with the complete React application which uses this API;
-* a link to the website that hosts your API.
+- Semantic HTML5
+- Flexbox
+- Grid layout
+- Flat BEM
+- Media queries 
+- Relative dimensions 
+- JavaScript/JSX
+- React / React Router 
+
+**GitHub Repository** 
+
+**Website** 
+
+**Running the Project**  
+  
+`npm run start` — to launch the server.  
+  
+`npm run dev` — to launch the server with the hot reload feature.  

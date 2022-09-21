@@ -1,0 +1,26 @@
+.posts-grid {
+    margin-left: calc((100vw - 880px)/2);
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
+    column-gap: 17px;
+    row-gap: 20px;
+    max-width: 880px;
+}
+
+@media screen and (max-width: 900px) {
+    .posts-grid {
+        margin: 0 auto;
+        grid-template-rows: 1fr 1fr 1fr;
+        grid-template-columns: 1fr 1fr;
+        max-width: 581px;
+    }
+}
+
+@media screen and (max-width: 590px) {
+    .posts-grid {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+        max-width: 282px;
+    }
+}
