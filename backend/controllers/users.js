@@ -39,8 +39,7 @@ const createUser = (req, res) => {
 
 const login = (req, res) => {
   const { email, password } = req.body; 
-  userModel.findOne({email})
-  User.findOne({ email })
+  userModel.findOne({email}).select('+password')
   .then((user) => {
     if (!user) {
       return Promise.reject(
@@ -54,7 +53,7 @@ const login = (req, res) => {
           const token = jwt.sign({_id: user._id}, 'encoding-string', {
             expiresIn: '7d'
           })
-          res.send({ name: user.name, email: user.email, token: jwt });
+          res.send({ name: user.name, email: user.email, token });
        })
    })
    .catch(err => handleError(err, res))
