@@ -41,11 +41,19 @@ const unlikeCard = (req, res) => {
 };
 
 const deleteCard = (req, res) => {
-  cardModel
+  const selectedCard = cardModel.findById(req.params.cardId);
+  const selectedCardOwner = selectedCard.owner;
+
+  if(req.user === selectedCardOwner) {
+    cardModel
     .findByIdAndRemove(req.params.cardId)
     .orFail()
     .then(() => res.send({ message: 'Card deleted' }))
     .catch((err) => handleError(err, res));
+  }
+  else {
+    res.status(403).send({ message: 'Unauthorized action' })
+  }
 };
 
 module.exports = {
