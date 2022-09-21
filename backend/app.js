@@ -16,13 +16,6 @@ mongoose.connect('mongodb://localhost:27017/aroundb');
 const { PORT = 3000 } = process.env;
 const ERROR_CODE = 404;
 
-app.use((req, res, next) => {
-  req.user = {
-    _id: '630d72f88e5be4e97c962ead',
-  };
-  next();
-});
-
 app.post('/signin', login)
 app.post('/signup', createUser)
 

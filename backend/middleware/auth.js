@@ -1,11 +1,7 @@
 const auth = (req, res, next) => {
-    const handleAuthError = (res) => {
-        return res.status(401).send({ message: 'Authorization failed' })
-    }
-
     const { authorization } = req.headers;
     if( !authorization || !authorization.startsWith('Bearer ')) {
-        handleAuthError(res)
+        return res.status(401).send({ message: 'Authorization failed' })
     }
     const token = authorization.replace('Bearer ','');
     let payload;
@@ -13,7 +9,7 @@ const auth = (req, res, next) => {
         payload = jwt.verify(token, 'encoding-string')
     }
     catch(err) {
-        handleAuthError(res);
+        return res.status(403).send({ message: 'Unauthorized action!' })
     }
     req.user = payload;
     next();
