@@ -1,0 +1,9 @@
+.logo {
+   background-color: transparent;
+}
+
+@media screen and (max-width: 590px) {
+    .logo {
+        width: 126px;
+    }
+}

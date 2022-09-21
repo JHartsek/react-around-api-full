@@ -1,0 +1,45 @@
+.info-tool-tip {
+    grid-area: content;
+    background-color: #fff;
+    width: 430px;
+    height: 330px; 
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+@media screen and (max-width: 544px) {
+    .info-tool-tip {
+        width: 280px;
+        height: 308px;
+    }
+}
+
+.info-tool-tip__image {
+    height: 120px;
+    width: 120px;
+    padding-bottom: 32px;
+}
+
+@media screen and (max-width: 544px) {
+    .info-tool-tip__image {
+        padding-bottom: 40px;
+    }
+}
+
+.info-tool-tip__title {
+    margin: 0;
+    font-weight: 900px;
+    font-size: 24px;
+    max-width: 358px;
+    text-align: center;
+}
+
+@media screen and (max-width: 544px) {
+    .info-tool-tip__title {
+        font-size: 20px;
+        max-width: 244px;
+    }
+}

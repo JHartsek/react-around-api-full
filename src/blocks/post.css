@@ -1,0 +1,94 @@
+.post {
+    margin: 0;
+    max-width: 282px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.post__content {
+    max-height: 282px;
+}
+
+.post__image {
+    height: 282px;
+    width: 282px;
+}
+
+.post__image:hover {
+    cursor: pointer;
+}
+
+.post__delete_visible {
+    position: relative;
+    bottom: 269px;
+    left: 249px;
+    background-image: url('../images/delete.svg');
+    width: 18px;
+    height: 19.3px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    border: none;
+    background-color: transparent;
+}
+
+.post__delete:hover {
+    cursor: pointer;
+    opacity: 0.6;
+}
+
+.post__caption {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff;
+    padding: 25px 18px 31px 21px;
+}
+
+.post__caption-text {
+    margin: 0;
+    color: #000;
+    font-weight: 900;
+    font-size: 24px;
+    line-height: 1.2;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.post__caption-interactions {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.post__caption-like__button{ 
+    margin: 0;
+    height: 24px;
+    width: 24px;
+    background-image: url('../images/like.svg');
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    border: none;
+    background-color: transparent;
+}
+
+.post__caption-like__button:hover {
+    cursor: pointer;
+    opacity: 0.5;
+}
+
+.post__caption-like__button_active {
+    background-image: url('../images/like-active.svg');
+}
+
+.post__caption-likes {
+    margin: 0;
+    padding-top: 3px;
+    text-align: center;
+    font-size: 14px;
+}

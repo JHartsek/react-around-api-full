@@ -1,0 +1,29 @@
+.footer {
+    padding-top: 67px;
+    padding-bottom: 60px;
+    padding-left: calc((100vw - 880px)/2);
+    color: #545454;
+}
+
+.footer__text {
+    margin: 0;
+}
+
+@media screen and (max-width: 900px) {
+    .footer {
+        margin-left: calc((100vw - 581px)/2);
+    }
+}
+
+@media screen and (max-width: 590px) {
+    .footer {
+        margin: 0;
+        max-width: 282px;
+        padding-top: 50px;
+        padding-bottom: 36px;
+        padding-left: 19px;
+    }
+    .footer__text {
+        font-size: 14px;
+    }
+}
