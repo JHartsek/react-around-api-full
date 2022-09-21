@@ -18,6 +18,14 @@ const getUserById = (req, res) => {
     .catch((err) => handleError(err, res));
 };
 
+const getCurrentUser = (req, res) => {
+  const currentUserId = req.user; 
+  userModel.findById(currentUserId)
+  .orFail()
+  .then((user) => res.send({data: user}))
+  .catch((err => handleError(err, res)))
+}
+
 const createUser = (req, res) => {
   const { name, about, avatar, email, password} = req.body;
   bcyrpt.hash(password, 10)
@@ -81,6 +89,7 @@ const updateAvatar = (req, res) => {
 module.exports = {
   getAllUsers,
   getUserById,
+  getCurrentUser,
   createUser,
   login, 
   updateProfile,
