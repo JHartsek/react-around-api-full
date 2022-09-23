@@ -19,6 +19,7 @@ import ProtectedRoute from './ProtectedRoute.js';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+  const [token, setToken] = React.useState('')
   const [currentPage, setCurrentPage] = React.useState('login');
   const [email, setEmail] = React.useState('');
   const [currentUser, setCurrentUser] = React.useState({});
@@ -40,7 +41,7 @@ function App() {
   const history = useHistory();
 
   React.useEffect(() => {
-    const token = localStorage.getItem('jwt');
+    setToken(localStorage.getItem('jwt'));
     if (token) {
       auth
         .checkToken(token)
@@ -240,7 +241,8 @@ function App() {
     auth
       .login(email, password)
       .then((res) => {
-        localStorage.setItem('jwt', res.token);
+        setToken(res.token)
+        localStorage.setItem('jwt', token);
         setIsLoggedIn(true);
         setCurrentPage('home');
         setEmail(email);
