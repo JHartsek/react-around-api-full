@@ -3,7 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const { limiter } = require('./utils/limiter');
 const { celebrate, Joi } = require('celebrate');
-const validateURL = require('./helpers/validateURL');
+const { requestLogger, errorLogger } = require('./middleware/logger');
 const userRouter = require('./routes/users');
 const cardRouter = require('./routes/cards');
 const { login, createUser } = require('./controllers/users');
@@ -17,6 +17,8 @@ mongoose.connect('mongodb://localhost:27017/aroundb');
 
 const { PORT = 3000 } = process.env;
 const ERROR_CODE = 404;
+
+app.use(requestLogger);
 
 app.post('/signin', celebrate({
   body: Joi.object().keys({
@@ -32,7 +34,6 @@ app.post('/signup', celebrate({
   })
 }), createUser)
 
-
 app.use(auth)
 app.use('/users', userRouter);
 app.use('/cards', cardRouter);
@@ -41,6 +42,7 @@ app.use('/', (req, res) => {
   res.status(ERROR_CODE).send({ message: 'Requested resource not found' });
 });
 
+app.use(errorLogger);
 app.use((err, req, res) => {
   const { statusCode = 500 , message } = err; 
   res.status(statusCode).send({ message: statusCode === 500 ? 'An error has occured on the server' : message })
