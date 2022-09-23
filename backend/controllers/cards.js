@@ -1,24 +1,23 @@
 const { cardModel } = require('../models/card');
-const { handleError } = require('./errors');
 
-const getAllCards = (req, res) => {
+const getAllCards = (req, res, next) => {
   cardModel
     .find({})
     .then((cards) => res.send({ data: cards }))
-    .catch((err) => handleError(err, res));
+    .catch((err) => next(err));
 };
 
-const createCard = (req, res) => {
+const createCard = (req, res, next) => {
   const { name, link } = req.body;
   const owner = req.user._id;
 
   cardModel
     .create({ name, link, owner })
     .then((card) => res.send({ data: card }))
-    .catch((err) => handleError(err, res));
+    .catch((err) => next(err));
 };
 
-const likeCard = (req, res) => {
+const likeCard = (req, res, next) => {
   cardModel.findByIdAndUpdate(
     req.params.cardId,
     { $addToSet: { likes: req.user._id } },
@@ -26,10 +25,10 @@ const likeCard = (req, res) => {
   )
     .orFail()
     .then((card) => res.send({ data: card }))
-    .catch((err) => handleError(err, res));
+    .catch((err) => next(err));
 };
 
-const unlikeCard = (req, res) => {
+const unlikeCard = (req, res, next) => {
   cardModel.findByIdAndUpdate(
     req.params.cardId,
     { $pull: { likes: req.user._id } },
@@ -37,10 +36,10 @@ const unlikeCard = (req, res) => {
   )
     .orFail()
     .then((card) => res.send({ data: card }))
-    .catch((err) => handleError(err, res));
+    .catch((err) => next(err));
 };
 
-const deleteCard = (req, res) => {
+const deleteCard = (req, res, next) => {
   const selectedCard = cardModel.findById(req.params.cardId);
   const selectedCardOwner = selectedCard.owner;
 
@@ -49,7 +48,7 @@ const deleteCard = (req, res) => {
     .findByIdAndRemove(req.params.cardId)
     .orFail()
     .then(() => res.send({ message: 'Card deleted' }))
-    .catch((err) => handleError(err, res));
+    .catch((err) => next(err));
   }
   else {
     res.status(403).send({ message: 'Unauthorized action' })

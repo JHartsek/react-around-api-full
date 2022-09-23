@@ -1,32 +1,31 @@
 const { userModel } = require('../models/user');
-const { handleError } = require('./errors');
 const bcyrpt = require('bcryptjs');
 const jwt = require('jsonwebtoken')
 
-const getAllUsers = (req, res) => {
+const getAllUsers = (req, res, next) => {
   userModel
     .find({})
     .then((users) => res.send({ data: users }))
-    .catch((err) => handleError(err, res));
+    .catch((err) => next(err));
 };
 
-const getUserById = (req, res) => {
+const getUserById = (req, res, next) => {
   userModel
     .findById(req.params.userId)
     .orFail()
     .then((user) => res.send({ data: user }))
-    .catch((err) => handleError(err, res));
+    .catch((err) => next(err));
 };
 
-const getCurrentUser = (req, res) => {
+const getCurrentUser = (req, res, next) => {
   const currentUserId = req.user; 
   userModel.findById(currentUserId)
   .orFail()
   .then((user) => res.send({data: user}))
-  .catch((err => handleError(err, res)))
+  .catch((err) => next(err));
 }
 
-const createUser = (req, res) => {
+const createUser = (req, res, next) => {
   const { name, about, avatar, email, password} = req.body;
   bcyrpt.hash(password, 10)
   .then(hash => {
@@ -34,10 +33,10 @@ const createUser = (req, res) => {
     .create({ name, about, avatar, email, password: hash })
   })
     .then((user) => res.send({ data: user }))
-    .catch((err) => handleError(err, res));
+    .catch((err) => next(err));
 };
 
-const login = (req, res) => {
+const login = (req, res, next) => {
   const { email, password } = req.body; 
   userModel.findOne({email}).select('+password')
   .then((user) => {
@@ -48,7 +47,7 @@ const login = (req, res) => {
     return bcrypt.compare(password, user.password)
       .then((authenticated) => {
           if (!authenticated) {
-             return Promise.reject(new Error('bad cred'));
+             return Promise.reject(new Error('bad credentials'));
           }
           const token = jwt.sign({_id: user._id}, 'encoding-string', {
             expiresIn: '7d'
@@ -56,10 +55,10 @@ const login = (req, res) => {
           res.send({ name: user.name, email: user.email, token });
        })
    })
-   .catch(err => handleError(err, res))
+   .catch(err => next(err)); 
   }
 
-const updateProfile = (req, res) => {
+const updateProfile = (req, res, next) => {
   const { name, about } = req.body;
   userModel
     .findByIdAndUpdate(
@@ -69,10 +68,10 @@ const updateProfile = (req, res) => {
     )
     .orFail()
     .then((user) => res.send({ data: user }))
-    .catch((err) => handleError(err, res));
+    .catch((err) => next(err));
 };
 
-const updateAvatar = (req, res) => {
+const updateAvatar = (req, res, next) => {
   const { avatar } = req.body;
   userModel
     .findByIdAndUpdate(
@@ -82,7 +81,7 @@ const updateAvatar = (req, res) => {
     )
     .orFail()
     .then((user) => res.send({ data: user }))
-    .catch((err) => handleError(err, res));
+    .catch((err) => next(err));
 };
 
 module.exports = {

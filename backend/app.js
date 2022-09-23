@@ -28,4 +28,9 @@ app.use('/', (req, res) => {
   res.status(ERROR_CODE).send({ message: 'Requested resource not found' });
 });
 
+app.use((err, req, res) => {
+  const { statusCode = 500 , message } = err; 
+  res.status(statusCode).send({ message: statusCode === 500 ? 'An error has occured on the server' : message })
+})
+
 app.listen(PORT);
