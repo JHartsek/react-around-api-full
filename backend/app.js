@@ -2,6 +2,8 @@ const helmet = require('helmet');
 const express = require('express');
 const mongoose = require('mongoose');
 const { limiter } = require('./utils/limiter');
+const { celebrate, Joi } = require('celebrate');
+const validateURL = require('./helpers/validateURL');
 const userRouter = require('./routes/users');
 const cardRouter = require('./routes/cards');
 const { login, createUser } = require('./controllers/users');
@@ -16,8 +18,19 @@ mongoose.connect('mongodb://localhost:27017/aroundb');
 const { PORT = 3000 } = process.env;
 const ERROR_CODE = 404;
 
-app.post('/signin', login)
-app.post('/signup', createUser)
+app.post('/signin', celebrate({
+  body: Joi.object().keys({
+    email: Joi.string().required().uniqe(),
+    password: Joi.string().required()
+  })
+}), login)
+
+app.post('/signup', celebrate({
+  body: Joi.object().keys({
+    email: Joi.string().required().uniqe(),
+    password: Joi.string().required()
+  })
+}), createUser)
 
 
 app.use(auth)

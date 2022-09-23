@@ -26,11 +26,11 @@ const getCurrentUser = (req, res, next) => {
 }
 
 const createUser = (req, res, next) => {
-  const { name, about, avatar, email, password} = req.body;
+  const { email, password} = req.body;
   bcyrpt.hash(password, 10)
   .then(hash => {
     userModel
-    .create({ name, about, avatar, email, password: hash })
+    .create({ email, password: hash })
   })
     .then((user) => res.send({ data: user }))
     .catch((err) => next(err));
