@@ -1,6 +1,7 @@
-const baseUrl = 'https://register.nomoreparties.co';
+const baseUrl = 'http://localhost:3000';
 const headers = {
-        "Content-Type": "application/json"
+        'content-type': 'application/json',
+        authorization: `Bearer ${localStorage.getItem('jwt')}`
     }
 
 const checkResponse = (res) => {
@@ -34,10 +35,7 @@ export const login = (email, password) => {
 export const checkToken = (token) => {
     return fetch(`${baseUrl}/users/me`, {
         method: 'GET', 
-        headers: {
-            'content-type': 'application/json',
-            authorization: `Bearer ${localStorage.getItem('jwt')}`
-        }
+        headers: headers,
     })
     .then(checkResponse)
 }

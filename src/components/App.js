@@ -19,7 +19,7 @@ import ProtectedRoute from './ProtectedRoute.js';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
-  const [token, setToken] = React.useState('')
+  const [token, setToken] = React.useState(localStorage.getItem('jwt'))
   const [currentPage, setCurrentPage] = React.useState('login');
   const [email, setEmail] = React.useState('');
   const [currentUser, setCurrentUser] = React.useState({});
@@ -55,7 +55,7 @@ function App() {
         .catch((err) => console.log(err));
     }
     loadInitialContent();
-  }, [history]);
+  }, [history, token]);
 
   function loadInitialContent() {
     api
