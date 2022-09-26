@@ -20,7 +20,7 @@ userRouter.get('/:userId', celebrate({
 
 userRouter.get('/me', celebrate({
   body: Joi.object().keys({
-    user: Joi.string().alphanum().length(24)
+    userId: Joi.string().alphanum().length(24)
   })
 }), (req, res) => {
   getCurrentUser(req, res);

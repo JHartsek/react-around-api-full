@@ -1,6 +1,6 @@
 const { userModel } = require('../models/user');
 const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
 
 const getAllUsers = (req, res, next) => {
   userModel
@@ -18,7 +18,7 @@ const getUserById = (req, res, next) => {
 };
 
 const getCurrentUser = (req, res, next) => {
-  const currentUserId = req.user; 
+  const currentUserId = req.user;
   userModel.findById(currentUserId)
   .orFail()
   .then((user) => res.send({data: user}))
@@ -38,12 +38,14 @@ const createUser = (req, res, next) => {
 
 const login = (req, res, next) => {
   const { email, password } = req.body; 
+  let user; 
   userModel.findOne({ email }).select('+password')
-  .then((user) => {
-    if (!user) {
+  .then((account) => {
+    if (!account) {
       return Promise.reject(
         new Error('Incorrect password or email'));
     }
+    user = account; 
     return bcrypt.compare(password, user.password)})
     .then((authenticated) => {
           if (!authenticated) {
@@ -53,6 +55,7 @@ const login = (req, res, next) => {
             expiresIn: '7d'
           })
           res.send({ name: user.name, email: user.email, token });
+          
        })
    
    .catch(err => next(err)); 
