@@ -1,5 +1,6 @@
 const helmet = require('helmet');
 const express = require('express');
+const cors = require('cors');
 const mongoose = require('mongoose');
 const { limiter } = require('./utils/limiter');
 const { celebrate, Joi } = require('celebrate');
@@ -10,6 +11,8 @@ const { login, createUser } = require('./controllers/users');
 const { auth } = require('./middleware/auth');
 
 const app = express();
+app.use(cors());
+app.options('*',cors());
 app.use(helmet());
 app.use(limiter);
 app.use(express.json());

@@ -1,7 +1,6 @@
 const baseUrl = 'http://localhost:3000';
 const headers = {
-        'content-type': 'application/json',
-        authorization: `Bearer ${localStorage.getItem('jwt')}`
+        'content-type': 'application/json'
     }
 
 const checkResponse = (res) => {
@@ -23,7 +22,7 @@ export const register = (email, password) => {
 export const login = (email, password) => {
     return fetch(`${baseUrl}/signin`,{
         method: 'POST',
-        headers: headers,
+        headers: headers, 
         body: JSON.stringify({
             password: password,
             email: email
@@ -35,7 +34,10 @@ export const login = (email, password) => {
 export const checkToken = (token) => {
     return fetch(`${baseUrl}/users/me`, {
         method: 'GET', 
-        headers: headers,
+        headers: {
+            'content-type': 'application/json',
+            authorization: `Bearer ${localStorage.getItem('jwt')}`
+        }
     })
     .then(checkResponse)
 }

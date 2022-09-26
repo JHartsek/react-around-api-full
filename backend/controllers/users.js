@@ -1,5 +1,5 @@
 const { userModel } = require('../models/user');
-const bcyrpt = require('bcryptjs');
+const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken')
 
 const getAllUsers = (req, res, next) => {
@@ -27,10 +27,10 @@ const getCurrentUser = (req, res, next) => {
 
 const createUser = (req, res, next) => {
   const { email, password} = req.body;
-  bcyrpt.hash(password, 10)
+  bcrypt.hash(password, 10)
   .then(hash => {
     userModel
-    .create({ email, password: hash })
+    .create({ email, password: hash, name: 'Jacques Cousteau', about: 'Explorer', avatar: 'https://pictures.s3.yandex.net/resources/avatar_1604080799.jpg'})
   })
     .then((user) => res.send({ data: user }))
     .catch((err) => next(err));
@@ -38,14 +38,14 @@ const createUser = (req, res, next) => {
 
 const login = (req, res, next) => {
   const { email, password } = req.body; 
-  userModel.findOne({email}).select('+password')
+  userModel.findOne({ email }).select('+password')
   .then((user) => {
     if (!user) {
       return Promise.reject(
         new Error('Incorrect password or email'));
     }
-    return bcrypt.compare(password, user.password)
-      .then((authenticated) => {
+    return bcrypt.compare(password, user.password)})
+    .then((authenticated) => {
           if (!authenticated) {
              return Promise.reject(new Error('bad credentials'));
           }
@@ -54,7 +54,7 @@ const login = (req, res, next) => {
           })
           res.send({ name: user.name, email: user.email, token });
        })
-   })
+   
    .catch(err => next(err)); 
   }
 
