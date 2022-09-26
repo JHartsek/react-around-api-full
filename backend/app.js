@@ -22,14 +22,14 @@ app.use(requestLogger);
 
 app.post('/signin', celebrate({
   body: Joi.object().keys({
-    email: Joi.string().required().uniqe(),
+    email: Joi.string().required(),
     password: Joi.string().required()
   })
 }), login)
 
 app.post('/signup', celebrate({
   body: Joi.object().keys({
-    email: Joi.string().required().uniqe(),
+    email: Joi.string().required(),
     password: Joi.string().required()
   })
 }), createUser)
@@ -48,4 +48,6 @@ app.use((err, req, res) => {
   res.status(statusCode).send({ message: statusCode === 500 ? 'An error has occured on the server' : message })
 })
 
-app.listen(PORT);
+app.listen(PORT, () => {
+  console.log(`I'm ready`)
+});
