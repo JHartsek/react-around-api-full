@@ -46,17 +46,13 @@ function App() {
       auth
         .checkToken(token)
         .then((res) => {
-          console.log('hi')
           setIsLoggedIn(true);
           setCurrentPage('home');
           const userEmail = res.data.email;
           setEmail(userEmail);
           history.push('/');
-        })
-        .then(() => {
           loadInitialContent();
-        }
-        )
+        })
         .catch((err) => console.log(err));
     };
   }, [history, token]);
