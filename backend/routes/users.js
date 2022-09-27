@@ -10,6 +10,10 @@ userRouter.get('/', (req, res) => {
   getAllUsers(req, res);
 });
 
+userRouter.get('/me', (req, res) => {
+  getCurrentUser(req, res);
+})
+
 userRouter.get('/:userId', celebrate({
   params: Joi.object().keys({
     userId: Joi.string().alphanum().length(24)
@@ -17,10 +21,6 @@ userRouter.get('/:userId', celebrate({
 }), (req, res) => {
   getUserById(req, res);
 });
-
-userRouter.get('/me', (req, res) => {
-  getCurrentUser(req, res);
-})
 
 userRouter.patch('/me', celebrate({
   body: Joi.object().keys({

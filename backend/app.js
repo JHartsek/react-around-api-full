@@ -46,7 +46,9 @@ app.use('/', (req, res) => {
 });
 
 app.use(errorLogger);
-app.use((err, req, res) => {
+app.use((err, req, res, next) => {
+  console.error(err)
+  console.error(err.stack)
   const { statusCode = 500 , message } = err; 
   res.status(statusCode).send({ message: statusCode === 500 ? 'An error has occured on the server' : message })
 })
