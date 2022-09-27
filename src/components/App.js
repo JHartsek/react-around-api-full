@@ -48,7 +48,7 @@ function App() {
         .then((res) => {
           setIsLoggedIn(true);
           setCurrentPage('home');
-          const userEmail = res.data.email;
+          const userEmail = res.email;
           setEmail(userEmail);
           history.push('/');
           loadInitialContent();

@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 const getAllUsers = (req, res, next) => {
   userModel
     .find({})
-    .then((users) => res.send({ data: users }))
+    .then((users) => res.send(users))
     .catch((err) => next(err));
 };
 
@@ -13,7 +13,7 @@ const getUserById = (req, res, next) => {
   userModel
     .findById(req.params.userId)
     .orFail()
-    .then((user) => res.send({ data: user }))
+    .then((user) => res.send(user))
     .catch((err) => next(err));
 };
 
@@ -21,7 +21,7 @@ const getCurrentUser = (req, res, next) => {
   const currentUserId = req.user;
   userModel.findById(currentUserId)
   .orFail()
-  .then((user) => res.send({data: user}))
+  .then((user) => res.send(user))
   .catch((err) => next(err));
 }
 
@@ -32,7 +32,7 @@ const createUser = (req, res, next) => {
     userModel
     .create({ email, password: hash, name: 'Jacques Cousteau', about: 'Explorer', avatar: 'https://pictures.s3.yandex.net/resources/avatar_1604080799.jpg'})
   })
-    .then((user) => res.send({ data: user }))
+    .then((user) => res.send(user))
     .catch((err) => next(err));
 };
 
@@ -70,7 +70,7 @@ const updateProfile = (req, res, next) => {
       { new: true, runValidators: true },
     )
     .orFail()
-    .then((user) => res.send({ data: user }))
+    .then((user) => res.send(user))
     .catch((err) => next(err));
 };
 
@@ -83,7 +83,7 @@ const updateAvatar = (req, res, next) => {
       { new: true, runValidators: true },
     )
     .orFail()
-    .then((user) => res.send({ data: user }))
+    .then((user) => res.send(user))
     .catch((err) => next(err));
 };
 

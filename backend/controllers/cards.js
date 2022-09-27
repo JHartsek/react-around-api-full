@@ -3,7 +3,7 @@ const { cardModel } = require('../models/card');
 const getAllCards = (req, res, next) => {
   cardModel
     .find({})
-    .then((cards) => res.send({ data: cards }))
+    .then((cards) => res.send(cards))
     .catch((err) => next(err));
 };
 
@@ -13,7 +13,7 @@ const createCard = (req, res, next) => {
 
   cardModel
     .create({ name, link, owner })
-    .then((card) => res.send({ data: card }))
+    .then((card) => res.send(card))
     .catch((err) => next(err));
 };
 
@@ -24,7 +24,7 @@ const likeCard = (req, res, next) => {
     { new: true },
   )
     .orFail()
-    .then((card) => res.send({ data: card }))
+    .then((card) => res.send(card))
     .catch((err) => next(err));
 };
 
@@ -35,7 +35,7 @@ const unlikeCard = (req, res, next) => {
     { new: true },
   )
     .orFail()
-    .then((card) => res.send({ data: card }))
+    .then((card) => res.send(card))
     .catch((err) => next(err));
 };
 
