@@ -31,8 +31,8 @@ const createUser = (req, res, next) => {
   .then(hash => {
     userModel
     .create({ email, password: hash, name: 'Jacques Cousteau', about: 'Explorer', avatar: 'https://pictures.s3.yandex.net/resources/avatar_1604080799.jpg'})
+    .then((user) => res.send({ email: user.email }))
   })
-    .then((user) => res.send(user))
     .catch((err) => next(err));
 };
 
@@ -55,9 +55,7 @@ const login = (req, res, next) => {
             expiresIn: '7d'
           })
           res.send({ name: user.name, email: user.email, token });
-          
        })
-   
    .catch(err => next(err)); 
   }
 
