@@ -19,7 +19,7 @@ import ProtectedRoute from './ProtectedRoute.js';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
-  const [token, setToken] = React.useState('')
+  const [token, setToken] = React.useState(localStorage.getItem('jwt'))
   const [currentPage, setCurrentPage] = React.useState('login');
   const [email, setEmail] = React.useState('');
   const [currentUser, setCurrentUser] = React.useState({});
@@ -142,7 +142,7 @@ function App() {
   }, []);
 
   function handleCardLike(card) {
-    const isLiked = card.likes.some((user) => user._id === currentUser._id);
+    const isLiked = card.likes.some((userId) => userId === currentUser._id);
     setIsLoading(true);
 
     if (!isLiked) {
@@ -242,7 +242,7 @@ function App() {
       .login(email, password)
       .then((res) => {
         setToken(res.token)
-        localStorage.setItem('jwt', token);
+        localStorage.setItem('jwt', res.token);
         setIsLoggedIn(true);
         setCurrentPage('home');
         setEmail(email);
