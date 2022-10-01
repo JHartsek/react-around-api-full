@@ -22,12 +22,5 @@ Around the US is an interactive platform where registered users can add and dele
 - Express 
 - MongoDB / mongoose 
 
-**GitHub Repository** 
-
 **Website** 
-
-**Running the Project**  
-  
-`npm run start` — to launch the server.  
-  
-`npm run dev` — to launch the server with the hot reload feature.  
+http://www.around-the-us-hartsek.students.nomoredomainssbs.ru/
