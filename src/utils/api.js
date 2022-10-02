@@ -83,7 +83,7 @@ class Api {
 }
 
 const apiOptions = {
-  baseUrl: "http://localhost:3000",
+  baseUrl: "http://api.around-the-us-hartsek.students.nomoredomainssbs.ru",
   headers: {
     'content-type': 'application/json',
     authorization: `Bearer ${localStorage.getItem('jwt')}`

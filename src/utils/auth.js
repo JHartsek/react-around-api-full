@@ -1,4 +1,4 @@
-const baseUrl = 'http://localhost:3000';
+const baseUrl = 'http://api.around-the-us-hartsek.students.nomoredomainssbs.ru';
 const headers = {
         'content-type': 'application/json'
     }
