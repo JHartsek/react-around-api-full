@@ -42,16 +42,16 @@ const unlikeCard = (req, res, next) => {
 const deleteCard = (req, res, next) => {
   let selectedCardOwner;
   cardModel.findById(req.params.cardId)
-  .then((card) => {
-    selectedCardOwner = card.owner.toString();
-    if(req.user._id === selectedCardOwner) {
-      cardModel
-      .findByIdAndRemove(req.params.cardId)
-      .orFail()
-      .then(() => res.send({ message: 'Card deleted' }))
-    }
-  })
-  .catch((err) => next(err))
+    .then((card) => {
+      selectedCardOwner = card.owner.toString();
+      if (req.user._id === selectedCardOwner) {
+        cardModel
+          .findByIdAndRemove(req.params.cardId)
+          .orFail()
+          .then(() => res.send({ message: 'Card deleted' }));
+      }
+    })
+    .catch((err) => next(err));
 };
 
 module.exports = {

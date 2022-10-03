@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const validator = require('validator')
+const validator = require('validator');
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -7,7 +7,7 @@ const userSchema = new mongoose.Schema({
     required: true,
     minlength: 2,
     maxlength: 30,
-    defualt: 'Jacques Cousteau', 
+    defualt: 'Jacques Cousteau',
   },
   about: {
     type: String,
@@ -28,16 +28,16 @@ const userSchema = new mongoose.Schema({
     defualt: 'https://pictures.s3.yandex.net/resources/avatar_1604080799.jpg',
   },
   email: {
-    type: String, 
+    type: String,
     required: true,
-    unique: true, 
-    validator: (email) => validator.isEmail(email)
-  }, 
+    unique: true,
+    validator: (email) => validator.isEmail(email),
+  },
   password: {
-    type: String, 
-    required: true, 
-    select: false
-  }
+    type: String,
+    required: true,
+    select: false,
+  },
 });
 
 const userModel = mongoose.model('user', userSchema);
