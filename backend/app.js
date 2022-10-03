@@ -9,6 +9,7 @@ const userRouter = require('./routes/users');
 const cardRouter = require('./routes/cards');
 const { login, createUser } = require('./controllers/users');
 const { auth } = require('./middleware/auth');
+const { ResourceNotFoundError } = require('./errors/ResourceNotFoundError');
 
 const app = express();
 app.use(cors());
@@ -50,13 +51,13 @@ app.use('/users', userRouter);
 app.use('/cards', cardRouter);
 
 app.use('/', (req, res) => {
-  res.status(ERROR_CODE).send({ message: 'Requested resource not found' });
+  throw new ResourceNotFoundError('Requested resource not found');
 });
 
 app.use(errorLogger);
 app.use((err, req, res, next) => {
-  console.error(err);
-  console.error(err.stack);
+console.error(err);
+console.error(err.stack);
   const { statusCode = 500, message } = err;
   res.status(statusCode).send({ message: statusCode === 500 ? 'An error has occured on the server' : message });
 });

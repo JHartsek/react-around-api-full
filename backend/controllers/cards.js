@@ -14,7 +14,7 @@ const createCard = (req, res, next) => {
   cardModel
     .create({ name, link, owner })
     .then((card) => res.send(card))
-    .catch((err) => next(err));
+    .catch((err) => next(new BadRequestError('Invalid data submitted')));
 };
 
 const likeCard = (req, res, next) => {
