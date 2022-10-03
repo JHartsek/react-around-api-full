@@ -18,6 +18,7 @@ app.use(limiter);
 app.use(express.json());
 mongoose.connect('mongodb://localhost:27017/aroundb');
 
+require('dotenv').config();
 const { PORT = 3000 } = process.env;
 const ERROR_CODE = 404;
 

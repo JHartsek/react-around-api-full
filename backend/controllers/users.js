@@ -1,6 +1,7 @@
 const { userModel } = require('../models/user');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const { NODE_ENV, JWT_SECRET } = process.env; 
 
 const getAllUsers = (req, res, next) => {
   userModel
@@ -51,9 +52,10 @@ const login = (req, res, next) => {
           if (!authenticated) {
              return Promise.reject(new Error('bad credentials'));
           }
-          const token = jwt.sign({_id: user._id}, 'encoding-string', {
-            expiresIn: '7d'
-          })
+          const token = jwt.sign({_id: user._id},
+            NODE_ENV === 'production' ? JWT_SECRET : 'encoding-string', 
+            {expiresIn: '7d'}
+            )
           res.send({ name: user.name, email: user.email, token });
        })
    .catch(err => next(err)); 
