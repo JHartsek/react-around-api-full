@@ -1,3 +1,7 @@
+const { ResourceNotFoundError } = require('../errors/ResourceNotFoundError');
+const { BadRequestError } = require('../errors/BadRequestError');
+const { ConflictError } = require('../errors/ConflictError');
+const { UnauthorizedError } = require('../errors/UnauthorizedError');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { userModel } = require('../models/user');
@@ -16,7 +20,9 @@ const getUserById = (req, res, next) => {
     .findById(req.params.userId)
     .orFail()
     .then((user) => res.send(user))
-    .catch((err) => next(err));
+    .catch((err) => {
+      err.name === 'DocumentNotFoundError' ? next(new ResourceNotFoundError('Could not find requested user')) : next(err)
+    })
 };
 
 const getCurrentUser = (req, res, next) => {
@@ -29,15 +35,24 @@ const getCurrentUser = (req, res, next) => {
 
 const createUser = (req, res, next) => {
   const { email, password } = req.body;
-  bcrypt.hash(password, 10)
+  userModel.findOne({ email }).select('+password')
+  .then((account) => {
+    if(account) {
+      return Promise.reject(new ConflictError('Duplicate email'));
+    }
+    bcrypt.hash(password, 10)
     .then((hash) => {
       userModel
         .create({
-          email, password: hash, name: 'Jacques Cousteau', about: 'Explorer', avatar: 'https://pictures.s3.yandex.net/resources/avatar_1604080799.jpg',
+          email, password: hash
         })
-        .then((user) => res.send({ email: user.email }));
+        .then((user) => res.send({ email: user.email }))
+        .catch(err => next(new BadRequestError('Invalid data submitted')))
     })
-    .catch((err) => next(err));
+  })
+    .catch((err) => {
+      next(err)
+    })
 };
 
 const login = (req, res, next) => {
@@ -47,7 +62,7 @@ const login = (req, res, next) => {
     .then((account) => {
       if (!account) {
         return Promise.reject(
-          new Error('Incorrect password or email'),
+          new UnauthorizedError('Incorrect email or password'),
         );
       }
       user = account;
@@ -55,7 +70,7 @@ const login = (req, res, next) => {
     })
     .then((authenticated) => {
       if (!authenticated) {
-        return Promise.reject(new Error('bad credentials'));
+        return Promise.reject(new UnauthorizedError('Incorrect email or password'));
       }
       const token = jwt.sign(
         { _id: user._id },
