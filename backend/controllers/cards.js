@@ -1,3 +1,5 @@
+const { ResourceNotFoundError } = require('../errors/ResourceNotFoundError');
+const { ForbiddenActionError } = require('../errors/ForbiddenActionError');
 const { cardModel } = require('../models/card');
 
 const getAllCards = (req, res, next) => {
@@ -25,7 +27,9 @@ const likeCard = (req, res, next) => {
   )
     .orFail()
     .then((card) => res.send(card))
-    .catch((err) => next(err));
+    .catch((err) => {
+      err.name === 'DocumentNotFoundError' ? next(new ResourceNotFoundError('Could not find requested card')) : next(err)
+    })
 };
 
 const unlikeCard = (req, res, next) => {
@@ -36,7 +40,9 @@ const unlikeCard = (req, res, next) => {
   )
     .orFail()
     .then((card) => res.send(card))
-    .catch((err) => next(err));
+    .catch((err) => {
+      err.name === 'DocumentNotFoundError' ? next(new ResourceNotFoundError('Could not find requested card')) : next(err)
+    })
 };
 
 const deleteCard = (req, res, next) => {
@@ -50,8 +56,11 @@ const deleteCard = (req, res, next) => {
           .orFail()
           .then(() => res.send({ message: 'Card deleted' }));
       }
+      throw new ForbiddenActionError(`Cannot delete another user's cards`);
     })
-    .catch((err) => next(err));
+    .catch((err) => {
+      err.name === 'DocumentNotFoundError' ? next(new ResourceNotFoundError('Could not find requested card')) : next(err)
+    })
 };
 
 module.exports = {

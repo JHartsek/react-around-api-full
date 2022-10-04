@@ -2,7 +2,7 @@ const helmet = require('helmet');
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
-const { celebrate, Joi } = require('celebrate');
+const { celebrate, Joi, errors } = require('celebrate');
 const { limiter } = require('./utils/limiter');
 const { requestLogger, errorLogger } = require('./middleware/logger');
 const userRouter = require('./routes/users');
@@ -54,10 +54,11 @@ app.use('/', (req, res) => {
   throw new ResourceNotFoundError('Requested resource not found');
 });
 
+app.use(errors())
 app.use(errorLogger);
 app.use((err, req, res, next) => {
-console.error(err);
-console.error(err.stack);
+//console.error(err);
+//console.error(err.stack);
   const { statusCode = 500, message } = err;
   res.status(statusCode).send({ message: statusCode === 500 ? 'An error has occured on the server' : message });
 });
