@@ -49,6 +49,7 @@ const unlikeCard = (req, res, next) => {
 const deleteCard = (req, res, next) => {
   let selectedCardOwner;
   cardModel.findById(req.params.cardId)
+    .orFail()
     .then((card) => {
       selectedCardOwner = card.owner.toString();
       if (req.user._id === selectedCardOwner) {
