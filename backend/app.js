@@ -22,7 +22,6 @@ mongoose.connect('mongodb://localhost:27017/aroundb');
 require('dotenv').config();
 
 const { PORT = 3000 } = process.env;
-const ERROR_CODE = 404;
 
 app.use(requestLogger);
 
@@ -54,15 +53,11 @@ app.use('/', (req, res) => {
   throw new ResourceNotFoundError('Requested resource not found');
 });
 
-app.use(errors())
+app.use(errors());
 app.use(errorLogger);
 app.use((err, req, res, next) => {
-//console.error(err);
-//console.error(err.stack);
   const { statusCode = 500, message } = err;
   res.status(statusCode).send({ message: statusCode === 500 ? 'An error has occured on the server' : message });
 });
 
-app.listen(PORT, () => {
-  console.log('I\'m ready');
-});
+app.listen(PORT);

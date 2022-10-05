@@ -1,9 +1,9 @@
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 const { ResourceNotFoundError } = require('../errors/ResourceNotFoundError');
 const { BadRequestError } = require('../errors/BadRequestError');
 const { ConflictError } = require('../errors/ConflictError');
 const { UnauthorizedError } = require('../errors/UnauthorizedError');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
 const { userModel } = require('../models/user');
 
 const { NODE_ENV, JWT_SECRET } = process.env;
@@ -21,8 +21,8 @@ const getUserById = (req, res, next) => {
     .orFail()
     .then((user) => res.send(user))
     .catch((err) => {
-      err.name === 'DocumentNotFoundError' ? next(new ResourceNotFoundError('Could not find requested user')) : next(err)
-    })
+      err.name === 'DocumentNotFoundError' ? next(new ResourceNotFoundError('Could not find requested user')) : next(err);
+    });
 };
 
 const getCurrentUser = (req, res, next) => {
@@ -36,23 +36,23 @@ const getCurrentUser = (req, res, next) => {
 const createUser = (req, res, next) => {
   const { email, password } = req.body;
   userModel.findOne({ email }).select('+password')
-  .then((account) => {
-    if(account) {
-      return Promise.reject(new ConflictError('Duplicate email'));
-    }
-    bcrypt.hash(password, 10)
-    .then((hash) => {
-      userModel
-        .create({
-          email, password: hash
-        })
-        .then((user) => res.send({ email: user.email }))
-        .catch(err => next(new BadRequestError('Invalid data submitted')))
+    .then((account) => {
+      if (account) {
+        return Promise.reject(new ConflictError('Duplicate email'));
+      }
+      bcrypt.hash(password, 10)
+        .then((hash) => {
+          userModel
+            .create({
+              email, password: hash,
+            })
+            .then((user) => res.send({ email: user.email }))
+            .catch((err) => next(new BadRequestError('Invalid data submitted')));
+        });
     })
-  })
     .catch((err) => {
-      next(err)
-    })
+      next(err);
+    });
 };
 
 const login = (req, res, next) => {
