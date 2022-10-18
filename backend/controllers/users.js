@@ -77,7 +77,7 @@ const login = (req, res, next) => {
         NODE_ENV === 'production' ? JWT_SECRET : 'encoding-string',
         { expiresIn: '7d' },
       );
-      res.send({ name: user.name, email: user.email, token });
+      res.send({ name: user.name, email: user.email, about: user.about, avtar: user.avatar, token });
     })
     .catch((err) => next(err));
 };
