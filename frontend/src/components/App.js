@@ -12,7 +12,7 @@ import AddPlacePopup from './AddPlacePopup.js';
 import ConfirmDeletePopup from './ConfirmDeletePopup.js';
 import ImagePopup from './ImagePopup.js';
 import Footer from './Footer.js';
-import api from '../utils/api.js';
+import Api from '../utils/api.js';
 import * as auth from '../utils/auth.js';
 import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
 import ProtectedRoute from './ProtectedRoute.js';
@@ -41,6 +41,16 @@ function App() {
 
   const history = useHistory();
 
+  const apiOptions = {
+    baseUrl: "https://api.around-the-us-hartsek.students.nomoredomainssbs.ru",
+    headers: {
+      'content-type': 'application/json',
+      authorization: `Bearer ${localStorage.getItem('jwt')}`
+  }
+  };
+
+  const api = new Api(apiOptions); 
+  
   React.useEffect(() => {
     setToken(localStorage.getItem('jwt'))
     if (token) {

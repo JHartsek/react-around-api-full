@@ -82,14 +82,4 @@ class Api {
   }
 }
 
-const apiOptions = {
-  baseUrl: "https://api.around-the-us-hartsek.students.nomoredomainssbs.ru",
-  headers: {
-    'content-type': 'application/json',
-    authorization: `Bearer ${localStorage.getItem('jwt')}`
-}
-};
-
-const api = new Api(apiOptions);
-
-export default api; 
+export default Api; 

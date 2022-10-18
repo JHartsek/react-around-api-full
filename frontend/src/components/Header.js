@@ -4,7 +4,6 @@ import logoFile from '../images/logo.svg';
 
 
 function Header({currentPage, device, onLoginClick, onSignUpClick, onLogoutClick, email}) {
-    debugger
     return (
         <header className="header">
             <img id="logo-image" className="logo" src={logoFile} alt="Around The U.S logo" />
