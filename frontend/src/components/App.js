@@ -21,6 +21,7 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
   const [token, setToken] = React.useState(localStorage.getItem('jwt'))
   const [currentPage, setCurrentPage] = React.useState('login');
+  const [device, setDevice] = React.useState('computer');
   const [email, setEmail] = React.useState('');
   const [currentUser, setCurrentUser] = React.useState({});
   const [cards, setCards] = React.useState([]);
@@ -52,10 +53,17 @@ function App() {
           setEmail(userEmail);
           history.push('/');
           loadInitialContent();
+          getScreenWidth();
         })
         .catch((err) => console.log(err));
     };
   }, [history, token]);
+
+  function getScreenWidth() {
+    if(window.innerWidth <= 525) {
+      setDevice('phone')
+    }
+  }
 
   function loadInitialContent() {
     api
@@ -246,6 +254,8 @@ function App() {
         setIsLoggedIn(true);
         setCurrentPage('home');
         setEmail(email);
+        setCurrentUser(res);
+        loadInitialContent();
         history.push('/');
       })
       .catch((err) => {
@@ -266,6 +276,8 @@ function App() {
 
   function handleLogout() {
     localStorage.removeItem('jwt');
+    setToken('');
+    setCurrentUser({})
     setCurrentPage('login');
     setIsLoggedIn(false);
   }
@@ -275,6 +287,7 @@ function App() {
       <CurrentUserContext.Provider value={currentUser}>
         <Header
           currentPage={currentPage}
+          device={device}
           onSignUpClick={handleSignUpClick}
           onLoginClick={handleLoginClick}
           onLogoutClick={handleLogout}
